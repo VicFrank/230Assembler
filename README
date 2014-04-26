@@ -1,1 +1,17 @@
 This is the readme for our 230 assembler
+
+Assembler.java accepts as input a .txt file containing commands formatted as such:
+
+CMD1  ARG1,ARG2,ARG3
+CMD2  ARG4,ARG6,ARG6
+
+For Example:
+
+LW 2,-4,C 
+Loads RC + (-4) into R2
+
+If you want to include the S bit, simply add 'S' to the beginning of your command:
+
+SCMD  ARG1,ARG2,ARG3
+
+There need not be three Arguments, J 8 Should work just fine for instance

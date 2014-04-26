@@ -1,9 +1,12 @@
 This is the readme for our 230 assembler
 
-Assembler.java accepts as input a .txt file containing commands formatted as such:
+Assembler.java accepts as input a .txt file from the command line and outputs to a file named AssembledMemory.mif
+
+Commands should be formatted as follows:
 
 CMD1  ARG1,ARG2,ARG3
 CMD2  ARG4,ARG6,ARG6
+ETC.
 
 For Example:
 

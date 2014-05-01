@@ -54,7 +54,7 @@ public class Assembler {
 	    String line;
 	    String fileName = "data/test.txt";
 		try {
-			br = new BufferedReader(new FileReader(fileName));
+			br = new BufferedReader(new FileReader(args[0]));
 			while ((line = br.readLine()) != null){
 				String instruction1 = null;
 				String instruction2 = null;

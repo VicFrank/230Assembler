@@ -14,7 +14,7 @@ Even if the immediate value is going to be 0, include that in the line. Commands
 
 R Type: 3
 D Type: 3
-B Type: 2
+B Type: 1
 J Type: 1
 
 Values must be entered in two's complement hex before being put into the assembler

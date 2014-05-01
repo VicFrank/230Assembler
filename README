@@ -6,15 +6,20 @@ Commands should be formatted as follows:
 
 CMD1  ARG1,ARG2,ARG3
 CMD2  ARG4,ARG6,ARG6
+CMD3, ARG7,ARG8
 ETC.
 
-For Example:
+If you want to include immediate commands, don't put them in parenthesis, include them like a normal command
+Values must be entered in two's complement hex before being put into the assembler
 
-LW 2,-4,C 
-Loads RC + (-4) into R2
+EXAMPLES:
+
+ADD r1,r2,r3
+ADD 1,2,3
+
+Assembly: LW r2,(12)r5
+My Assembler: LW 2,C,5
 
 If you want to include the S bit, simply add 'S' to the beginning of your command:
 
 SCMD  ARG1,ARG2,ARG3
-
-There need not be three Arguments, J 8 Should work just fine for instance

@@ -10,6 +10,13 @@ CMD3, ARG7,ARG8
 ETC.
 
 If you want to include immediate commands, don't put them in parenthesis, include them like a normal command
+Even if the immediate value is going to be 0, include that in the line. Commands of the same type always take the same number of commands. That is:
+
+R Type: 3
+D Type: 3
+B Type: 2
+J Type: 1
+
 Values must be entered in two's complement hex before being put into the assembler
 
 EXAMPLES:

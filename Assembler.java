@@ -41,8 +41,9 @@ public class Assembler {
 		BufferedReader br = null;
 
 	    String line;
+	    String fileName = args[0];
 		try {
-			br = new BufferedReader(new FileReader(args[0]));
+			br = new BufferedReader(new FileReader(fileName));
 			while ((line = br.readLine()) != null){
 				String instruction1 = null;
 				String instruction2 = null;
@@ -54,15 +55,15 @@ public class Assembler {
 				command = line.split("[ ]+")[0];
 				command = command.toUpperCase();
 				//cut out the command and the whitespace
-				line = line.substring(command.length(), line.length()-1);
+				line = line.substring(command.length(), line.length());
 				line = line.trim();
 				//now get the comma delimited instructions
 				String[] instructions = line.split("[,]");
 				instruction1 = instructions[0];
-				if(instructions.length == 2){
+				if(instructions.length >= 2){
 					instruction2 = instructions[1];
 				}
-				else if(instructions.length == 3){
+				if(instructions.length == 3){
 					instruction3 = instructions[2];
 				}
 				int setBit = 0;
@@ -124,7 +125,11 @@ public class Assembler {
 					case "LE": condValue = 15; break;
 					}
 				}
+				else{
+					condValue = 0;
+				}
 				Integer temp = 0;
+				String temp2;
 				switch (type) {
 				case "R":
 					//OpCode(4)Cond(4)S(1)opx(3)regD(4)regS(4)regT(4)
@@ -138,33 +143,36 @@ public class Assembler {
 					break;
 				case "D":
 					//OpCode(4)Cond(4)S(1)opx(7)regS(4)regT(4)
-					//EX: LW 2,-4,C Loads C+-4 into 2
+					//EX: LW 2,4,C Loads C+4 into 2
 					result[5] = instruction1;
 					result[4] = instruction3;
 					temp = Integer.parseInt(instruction2, 16) + 128 * setBit;
-					result[3] = Integer.toString(temp).substring(1);
-					result[2] = Integer.toString(temp).substring(0,1);
+					temp2 = "0" + temp;
+					result[3] = temp2.substring(1);
+					result[2] = temp2.substring(0,1);
 					result[1] = condValue.toString();
 					result[0] = opCode.toString();
 					break;
 				case "B":
 					//OpCode(4)Cond(4)Label(16)
 					temp = Integer.parseInt(instruction1, 16);
-					result[5] = Integer.toString(temp).substring(3,4);
-					result[4] = Integer.toString(temp).substring(2,3);
-					result[3] = Integer.toString(temp).substring(1,2);
-					result[2] = Integer.toString(temp).substring(0,1);
+					temp2 = "000" + temp;
+					result[5] = temp2.substring(3,4);
+					result[4] = temp2.substring(2,3);
+					result[3] = temp2.substring(1,2);
+					result[2] = temp2.substring(0,1);
 					result[1] = condValue.toString();
 					result[0] = opCode.toString();
 					break;
 				case "J":
 					//OpCode(4)Constant(20)
 					temp = Integer.parseInt(instruction1, 16);
-					result[5] = Integer.toString(temp).substring(4,5);
-					result[4] = Integer.toString(temp).substring(3,4);
-					result[3] = Integer.toString(temp).substring(2,3);
-					result[2] = Integer.toString(temp).substring(1,2);
-					result[1] = Integer.toString(temp).substring(0,1);
+					temp2 = "0000" + temp;
+					result[5] = temp2.substring(4,5);
+					result[4] = temp2.substring(3,4);
+					result[3] = temp2.substring(2,3);
+					result[2] = temp2.substring(1,2);
+					result[1] = temp2.substring(0,1);
 					result[0] = opCode.toString();
 					break;
 				}
@@ -176,6 +184,7 @@ public class Assembler {
 				output = output + ";";
 				
 				//now write to the .mif file
+				System.out.println(output);
 				bw.write("output");
 				bw.newLine();
 				

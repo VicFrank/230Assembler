@@ -1,5 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 
@@ -18,33 +21,33 @@ public class Assembler {
 		System.out.println("DATA_RADIX=HEX;");
 		System.out.println("CONTENT BEGIN");
 		System.out.println("0  :  000000;");
-//		File file = new File("AssembledMemory.mif");
-//		FileWriter fw = null;
-//		if (!file.exists()) {
-//			try {
-//				file.createNewFile();
-//				fw = new FileWriter(file.getAbsoluteFile());
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		BufferedWriter bw = new BufferedWriter(fw);
-//		try {
-//			bw.write("WIDTH=24;");
-//			bw.newLine();
-//			bw.write("DEPTH=1024;");
-//			bw.newLine();
-//			bw.write("ADDRESS_RADIX=UNS;");
-//			bw.newLine();
-//			bw.write("DATA_RADIX=HEX;");
-//			bw.newLine();
-//			bw.write("CONTENT BEGIN");
-//			bw.newLine();
-//			bw.write("0  :  000000;");
-//			bw.newLine();
-//		} catch (IOException e1) {
-//			e1.printStackTrace();
-//		}
+		File file = new File("AssembledMemory.mif");
+		FileWriter fw = null;
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+				fw = new FileWriter(file.getAbsoluteFile());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		BufferedWriter bw = new BufferedWriter(fw);
+		try {
+			bw.write("WIDTH=24;");
+			bw.newLine();
+			bw.write("DEPTH=1024;");
+			bw.newLine();
+			bw.write("ADDRESS_RADIX=UNS;");
+			bw.newLine();
+			bw.write("DATA_RADIX=HEX;");
+			bw.newLine();
+			bw.write("CONTENT BEGIN");
+			bw.newLine();
+			bw.write("0  :  000000;");
+			bw.newLine();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 
 		BufferedReader br = null;
 
@@ -203,8 +206,8 @@ public class Assembler {
 
 				//now write to the .mif file
 				System.out.println(output);
-//				bw.write("output");
-//				bw.newLine();
+				bw.write("output");
+				bw.newLine();
 
 				//increment the counter
 				count++;
@@ -214,11 +217,11 @@ public class Assembler {
 		}
 
 		System.out.println("END;");
-//		try {
-//			bw.write("END;");
-//			bw.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			bw.write("END;");
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

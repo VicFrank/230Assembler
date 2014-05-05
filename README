@@ -10,12 +10,31 @@ CMD3, ARG7,ARG8
 ETC.
 
 If you want to include immediate commands, don't put them in parenthesis, include them like a normal command
-Even if the immediate value is going to be 0, include that in the line. Commands of the same type always take the same number of commands. That is:
+Even if the immediate value is going to be 0, include that in the line.
 
-R Type: 3
-D Type: 3
-B Type: 1
-J Type: 1
+Here is the specific arguments for each command:
+For R-Type Instructions:
+  add,sub,and,or,xor,sll:
+	  destinationReg,source1,source2
+	  destinationReg,source1,source2
+  cmp:
+	  0,source1,source2
+  jr:
+	  0,source1,0
+
+For D-Type Instructions:
+  lw,sw,addi: 
+	  destinationReg,sourceReg,Immediate
+	  destinationReg,sourceReg,Immediate
+	  destinationReg,sourceReg,Immediate
+For B-Type Instructions:
+  b,bal:
+	  Label
+For J-Type Instructions:
+  j,jal:
+	  constant
+  li:
+	  destinationReg,constant
 
 Values must be entered in two's complement hex before being put into the assembler
 

@@ -21,40 +21,40 @@ public class Assembler {
 		System.out.println("DATA_RADIX=HEX;");
 		System.out.println("CONTENT BEGIN");
 		System.out.println("0  :  000000;");
-		File file = new File("AssembledMemory.mif");
-		FileWriter fw = null;
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-				fw = new FileWriter(file.getAbsoluteFile());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		BufferedWriter bw = new BufferedWriter(fw);
-		try {
-			bw.write("WIDTH=24;");
-			bw.newLine();
-			bw.write("DEPTH=1024;");
-			bw.newLine();
-			bw.write("ADDRESS_RADIX=UNS;");
-			bw.newLine();
-			bw.write("DATA_RADIX=HEX;");
-			bw.newLine();
-			bw.write("CONTENT BEGIN");
-			bw.newLine();
-			bw.write("0  :  000000;");
-			bw.newLine();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+//		File file = new File("AssembledMemory.mif");
+//		FileWriter fw = null;
+//		if (!file.exists()) {
+//			try {
+//				file.createNewFile();
+//				fw = new FileWriter(file.getAbsoluteFile());
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		BufferedWriter bw = new BufferedWriter(fw);
+//		try {
+//			bw.write("WIDTH=24;");
+//			bw.newLine();
+//			bw.write("DEPTH=1024;");
+//			bw.newLine();
+//			bw.write("ADDRESS_RADIX=UNS;");
+//			bw.newLine();
+//			bw.write("DATA_RADIX=HEX;");
+//			bw.newLine();
+//			bw.write("CONTENT BEGIN");
+//			bw.newLine();
+//			bw.write("0  :  000000;");
+//			bw.newLine();
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
 
 		BufferedReader br = null;
 
 	    String line;
-	    String fileName = "data/test.txt";
+	    String fileName = "data/input.txt";
 		try {
-			br = new BufferedReader(new FileReader(args[0]));
+			br = new BufferedReader(new FileReader(fileName));
 			while ((line = br.readLine()) != null){
 				String instruction1 = null;
 				String instruction2 = null;
@@ -62,7 +62,8 @@ public class Assembler {
 				String cond = null;
 				String command = null;
 				String[] result = new String[6];
-				//parse line by line
+				//get rid of comments
+				line = line.split("[//]")[0];
 				command = line.split("[ ]+")[0];
 				command = command.toUpperCase();
 				//cut out the command and the whitespace
@@ -79,7 +80,7 @@ public class Assembler {
 				}
 				int setBit = 0;
 				//break down command if it has an s bit
-				if(command.startsWith("S")){
+				if(command.startsWith("S") && !command.equals("SW") && !command.equals("SI")){
 					setBit = 1;
 					command = command.substring(1);
 				}
@@ -145,6 +146,9 @@ public class Assembler {
 				switch (Type.valueOf(type)) {
 				case R:
 					//OpCode(4)Cond(4)S(1)opx(3)regD(4)regS(4)regT(4)
+					if(opCode == 2){
+						instruction3 = "0";
+					}
 					result[5] = instruction3;
 					result[4] = instruction2;
 					result[3] = instruction1;
@@ -166,7 +170,7 @@ public class Assembler {
 					result[3] = temp2.substring(1);
 					result[2] = temp2.substring(0,1);
 					result[1] = condValue.toString();
-					result[0] = opCode.toString();
+					result[0] = Integer.toHexString(opCode);
 					break;
 				case B:
 					//OpCode(4)Cond(4)Label(16)
@@ -180,11 +184,18 @@ public class Assembler {
 					result[3] = temp2.substring(1,2);
 					result[2] = temp2.substring(0,1);
 					result[1] = condValue.toString();
-					result[0] = opCode.toString();
+					result[0] = Integer.toHexString(opCode);
 					break;
 				case J:
 					//OpCode(4)Constant(20)
 					temp = Integer.parseInt(instruction1, 16);
+					//if it's a load immediate instruction
+					if(opCode == 14){
+						//shift the register four "bits" over and then add the register
+						temp = Integer.parseInt(instruction2, 16);
+						temp *= 16;
+						temp += Integer.parseInt(instruction1, 16);
+					}
 					temp2 = "0000" + Integer.toHexString(temp);
 					while(temp2.length() > 5){
 						temp2 = temp2.substring(1, temp2.length());
@@ -194,7 +205,7 @@ public class Assembler {
 					result[3] = temp2.substring(2,3);
 					result[2] = temp2.substring(1,2);
 					result[1] = temp2.substring(0,1);
-					result[0] = opCode.toString();
+					result[0] = Integer.toHexString(opCode);
 					break;
 				}
 
@@ -206,8 +217,8 @@ public class Assembler {
 
 				//now write to the .mif file
 				System.out.println(output);
-				bw.write("output");
-				bw.newLine();
+//				bw.write("output");
+//				bw.newLine();
 
 				//increment the counter
 				count++;
@@ -217,11 +228,11 @@ public class Assembler {
 		}
 
 		System.out.println("END;");
-		try {
-			bw.write("END;");
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			bw.write("END;");
+//			bw.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 }

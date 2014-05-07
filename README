@@ -1,6 +1,6 @@
 This is the readme for our 230 assembler
 
-Assembler.java accepts as input a .txt file from the command line and outputs to a file named AssembledMemory.mif
+Assembler.java accepts as input a .txt file from the command line and outputs .mif formatted tex to the stdout.
 
 Commands should be formatted as follows:
 

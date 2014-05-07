@@ -25,7 +25,7 @@ public class Assembler {
 		BufferedReader br = null;
 
 	    String line;
-	    String fileName = "data/input.txt";
+	    String fileName = args[0];
 		try {
 			br = new BufferedReader(new FileReader(fileName));
 			while ((line = br.readLine()) != null){

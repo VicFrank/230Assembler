@@ -21,33 +21,6 @@ public class Assembler {
 		System.out.println("DATA_RADIX=HEX;");
 		System.out.println("CONTENT BEGIN");
 		System.out.println("0  :  000000;");
-//		File file = new File("AssembledMemory.mif");
-//		FileWriter fw = null;
-//		if (!file.exists()) {
-//			try {
-//				file.createNewFile();
-//				fw = new FileWriter(file.getAbsoluteFile());
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		BufferedWriter bw = new BufferedWriter(fw);
-//		try {
-//			bw.write("WIDTH=24;");
-//			bw.newLine();
-//			bw.write("DEPTH=1024;");
-//			bw.newLine();
-//			bw.write("ADDRESS_RADIX=UNS;");
-//			bw.newLine();
-//			bw.write("DATA_RADIX=HEX;");
-//			bw.newLine();
-//			bw.write("CONTENT BEGIN");
-//			bw.newLine();
-//			bw.write("0  :  000000;");
-//			bw.newLine();
-//		} catch (IOException e1) {
-//			e1.printStackTrace();
-//		}
 
 		BufferedReader br = null;
 
@@ -71,12 +44,12 @@ public class Assembler {
 				line = line.trim();
 				//now get the comma delimited instructions
 				String[] instructions = line.split("[,]");
-				instruction1 = instructions[0];
+				instruction1 = instructions[0].trim();
 				if(instructions.length >= 2){
-					instruction2 = instructions[1];
+					instruction2 = instructions[1].trim();
 				}
 				if(instructions.length == 3){
-					instruction3 = instructions[2];
+					instruction3 = instructions[2].trim();
 				}
 				int setBit = 0;
 				//break down command if it has an s bit
@@ -85,9 +58,9 @@ public class Assembler {
 					command = command.substring(1);
 				}
 				//break down the command if it has a cond
-				if((command.length() > 3 && !command.equals("ADDI")) || (command.startsWith("B") && !command.equals("BAL"))){
-					cond = command.substring(command.length()-2, command.length()-1);
-					command = command.substring(0, command.length()-3);
+				if((command.length() > 3 && !command.equals("ADDI")) || (command.startsWith("B") && !command.equals("BAL") && !command.equals("B")) ||(command.startsWith("J") && !command.equals("JAL"))){
+					cond = command.substring(command.length()-2, command.length());
+					command = command.substring(0, command.length()-2);
 				}
 				//now convert into hex
 				Integer opCode = null;
@@ -106,8 +79,8 @@ public class Assembler {
 				case FLP: opCode = 0; opx = 5; type = "R"; break;
 
 				case LW:  opCode = 4; type = "D"; break;
-				case SW:  opCode = 6; type = "D"; break;
-				case ADDI:opCode = 5; type = "D"; break;
+				case SW:  opCode = 5; type = "D"; break;
+				case ADDI:opCode = 6; type = "D"; break;
 				case SI:  opCode = 7; type = "D"; break;
 
 				case B:   opCode = 8; type = "B"; break;
@@ -215,10 +188,7 @@ public class Assembler {
 				}
 				output = output + ";";
 
-				//now write to the .mif file
 				System.out.println(output);
-//				bw.write("output");
-//				bw.newLine();
 
 				//increment the counter
 				count++;
@@ -228,11 +198,5 @@ public class Assembler {
 		}
 
 		System.out.println("END;");
-//		try {
-//			bw.write("END;");
-//			bw.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 }
